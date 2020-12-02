@@ -61,7 +61,6 @@ stages:
       vmImage: 'ubuntu-18.04'
     environment: dev
     variables:
-     MySettings.Name: $(TestVar)
     - group: Release
     strategy:
       runOnce:
