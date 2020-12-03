@@ -70,7 +70,7 @@ stages:
             artifact: drop
           - task: FileTransform@1
             inputs:
-              folderPath: '$(System.DefaultWorkingDirectory)/**/'
+              folderPath: '$(System.DefaultWorkingDirectory)/**/$(buildConfiguration)/*.zip'
               fileType: 'json'
               targetFiles: '**/appsettings.json'
           - task: AzureWebApp@1
