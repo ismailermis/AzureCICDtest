@@ -81,5 +81,5 @@ stages:
             inputs:
               folderPath: '$(System.DefaultWorkingDirectory)'
               fileType: 'json'
-              targetFiles: '**/appsettings.json'
+              targetFiles: 'appsettings.json'
           
