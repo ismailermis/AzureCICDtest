@@ -47,7 +47,23 @@ stages:
         publishWebProjects: false
         arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
         zipAfterPublish: true
-    
+    - task: CopyFiles@2
+      displayName: 'Copy zip files'
+      inputs:
+      SourceFolder: '$(Build.SourcesDirectory)'
+      Contents: '**\*.zip'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish artifacts'
+
+    - task: FileTransform@1
+      displayName: 'Update appsettings.json file'
+      inputs:
+        folderPath: '$(Build.ArtifactStagingDirectory)'
+        fileType: 'json'
+        targetFiles: '**/appsettings.json'
+
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
@@ -75,10 +91,3 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-          - task: FileTransform@1
-            displayName: 'Transform appsettings.json'
-            inputs:
-              folderPath: '$(System.DefaultWorkingDirectory)/**/*.zip'
-              fileType: 'json'
-              targetFiles: '**/appsettings.json'
-          
