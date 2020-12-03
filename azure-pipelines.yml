@@ -25,7 +25,11 @@ stages:
       displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
       inputs:
         version: '$(dotnetSdkVersion)'
-
+    - task: FileTransform@1
+      inputs:
+        folderPath: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        fileType: 'json'
+        targetFiles: '**/appsettings.json'
     - task: DotNetCoreCLI@2
       displayName: 'Restore project dependencies'
       inputs:
@@ -75,8 +79,4 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-          - task: FileTransform@1
-            inputs:
-              folderPath: '$(System.DefaultWorkingDirectory)/**/*.zip'
-              fileType: 'json'
-              targetFiles: '**/appsettings.json'
+          
