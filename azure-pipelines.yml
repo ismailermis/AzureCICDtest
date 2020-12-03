@@ -25,11 +25,7 @@ stages:
       displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
       inputs:
         version: '$(dotnetSdkVersion)'
-    - task: FileTransform@1
-      inputs:
-        folderPath: '$(System.DefaultWorkingDirectory)/**/'
-        fileType: 'json'
-        targetFiles: '**/appsettings.json'
+    
     - task: DotNetCoreCLI@2
       displayName: 'Restore project dependencies'
       inputs:
@@ -72,7 +68,11 @@ stages:
           steps:
           - download: current
             artifact: drop
-        
+          - task: FileTransform@1
+            inputs:
+              folderPath: '$(System.DefaultWorkingDirectory)/**/'
+              fileType: 'json'
+              targetFiles: '**/appsettings.json'
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
