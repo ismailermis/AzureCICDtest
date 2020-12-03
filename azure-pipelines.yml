@@ -47,6 +47,7 @@ stages:
         publishWebProjects: false
         arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
         zipAfterPublish: true
+    
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
@@ -68,15 +69,16 @@ stages:
           steps:
           - download: current
             artifact: drop
-          - task: FileTransform@1
-            inputs:
-              folderPath: '$(System.DefaultWorkingDirectory)/**/*.zip'
-              fileType: 'json'
-              targetFiles: '**/appsettings.json'
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+          - task: FileTransform@1
+            displayName: 'Transform appsettings.json'
+            inputs:
+              folderPath: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              fileType: 'json'
+              targetFiles: '**/appsettings.json'
           
