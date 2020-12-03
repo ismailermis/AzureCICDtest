@@ -76,7 +76,7 @@ stages:
               appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
           - task: FileTransform@1
-          inputs:
-            folderPath: '$(System.DefaultWorkingDirectory)/**/*.zip'
-            fileType: 'json'
-            targetFiles: '**/appsettings.json'
+            inputs:
+              folderPath: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              fileType: 'json'
+              targetFiles: '**/appsettings.json'
